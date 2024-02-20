@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profiles</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .banner {
+            background-color: pink;
+            padding: 20px;
+        }
+        
+        .banner img {
+            max-width: 100px;
+            height: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .profile-image {
+            max-width: 50%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <img src="camgram.png" alt="Site Logo">
+    </div>
+
+    <h1>Profile App</h1>
+        <iframe src="https://thunkable.site/w/4iFT627gSYHb8lSiVosaR" width="50%" height="800px"></iframe>
+
+    <h1>User Profiles</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Game</th>
+                <th>Food</th>
+                <th>Color</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody id="profileData">
+            <!-- Profiles will be dynamically added here -->
+        </tbody>
+    </table>
+    
+    <script>
+        // JavaScript code
+        fetch('https://a03-profileapp-default-rtdb.firebaseio.com/.json')
+            .then(response => response.json())
+            .then(data => {
+                const profileData = document.getElementById('profileData');
+                
+                // Iterate over each profile
+                Object.keys(data).forEach(key => {
+                    if (key !== "highScore") {
+                        const profile = data[key];
+                        
+                        // Create a new row for each profile
+                        const row = document.createElement('tr');
+                        
+                        // Add profile data to the row
+                        row.innerHTML = `
+                            <td>${profile.name}</td>
+                            <td>${profile.game}</td>
+                            <td>${profile.food}</td>
+                            <td>${profile.color}</td>
+                            <td><img src="${profile.image}" alt="Profile Image" class="profile-image"></td>
+                        `;
+                        
+                        // Append the row to the table
+                        profileData.appendChild(row);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>
